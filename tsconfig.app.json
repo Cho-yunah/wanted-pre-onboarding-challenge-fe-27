@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "composite": true, // Project References에 필수
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2020",
     "useDefineForClassFields": true,
@@ -12,7 +13,9 @@
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
-    "noEmit": true,
+    "emitDeclarationOnly": true, // .d.ts 파일만 생성
+    "declaration": true, // 타입 선언 파일 생성
+    "declarationMap": true, // 선언 파일에 소스맵 포함
     "jsx": "react-jsx",
 
     /* Linting */
