@@ -1,3 +1,6 @@
+@import "./styles/mixins";
+@import "./styles/reset";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -23,7 +26,7 @@ a {
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  // color: #535bf2;
 }
 
 body {
@@ -49,13 +52,13 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  outline: none;
 }
 button:hover {
-  border-color: #646cff;
+  // border-color: #646cff;
 }
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
 }
 
 @media (prefers-color-scheme: light) {
@@ -64,9 +67,20 @@ button:focus-visible {
     background-color: #ffffff;
   }
   a:hover {
-    color: #747bff;
+    // color: #747bff;
   }
   button {
     background-color: #f9f9f9;
   }
+}
+
+.flex-center {
+  @include flex-center;
+}
+
+.card {
+  @include flex-center;
+  @apply flex-col p-1;
+  word-wrap: break-word;
+  box-shadow: 0 1.6rem 3rem #0000001a;
 }
