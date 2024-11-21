@@ -6,6 +6,7 @@ import {
 } from "../../config/utils/validation";
 import ErrorMessage from "./ErrorMessage";
 import TestAccountInfo from "./TestAccountInfo";
+import { loginWithFormData } from "../../api/authApi";
 
 interface LoginFormErrors {
   email: string;
@@ -26,8 +27,8 @@ const LoginForm = () => {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const email = formData.get("email");
-    const password = formData.get("password");
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
     const result = schema.safeParse({ email, password });
     if (!result.success) {
@@ -39,7 +40,11 @@ const LoginForm = () => {
       return;
     }
     setErrors({} as LoginFormErrors);
-    // console.log("폼 제출 성공:", result.data);
+    try {
+      loginWithFormData(email, password);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -57,6 +62,7 @@ const LoginForm = () => {
         <input
           type="email"
           name="email"
+          placeholder="Email"
           className={getInputClassName(!!errors.email)}
         />
         <ErrorMessage message={errors.email} />

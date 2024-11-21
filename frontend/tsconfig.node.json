@@ -26,15 +26,14 @@
     "baseUrl": "./",
     "paths": {
       "@components/*": ["src/components/*"],
-      "@models/*": ["src/models/*"],
-      "@viewModels/*": ["src/viewModels/*"],
-      "@utils/*": ["src/utils/*"],
+      "@pages/*": ["src/pages/*"],
+      "@api/*": ["src/api/*"],
       "@hooks/*": ["src/hooks/*"],
       "@styles/*": ["src/styles/*"],
       "@assets/*": ["src/assets/*"],
       "@config/*": ["src/config/*"]
     }
   },
-  "include": ["frontend/vite.config.ts"],
+  "include": ["vite.config.ts"],
   "exclude": ["node_modules", "dist"]
 }

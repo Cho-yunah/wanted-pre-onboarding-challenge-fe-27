@@ -1,3 +1,4 @@
 packages:
-  - frontend
-  - backend
+  - "frontend" # 프론트엔드 프로젝트 경로
+  - "backend" # 백엔드 프로젝트 경로
+  - "shared" # (옵션) 공용 코드 라이브러리

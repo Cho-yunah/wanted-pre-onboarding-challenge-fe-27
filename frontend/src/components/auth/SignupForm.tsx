@@ -5,6 +5,7 @@ import {
 import { useState } from "react";
 import { z } from "zod";
 import ErrorMessage from "./ErrorMessage";
+import { signupWithFormData } from "../../api/authApi";
 
 interface SignupFormErrors {
   name: string;
@@ -49,6 +50,11 @@ const SignupForm = () => {
       return;
     }
     setErrors({} as SignupFormErrors);
+    try {
+      signupWithFormData(formData.name, formData.email, formData.password);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

@@ -9,7 +9,7 @@ const TestAccountInfo = () => {
           <strong>email :</strong> john@gmail.com
         </p>
         <p>
-          <strong>password :</strong> &123456
+          <strong>password :</strong> &1234567
         </p>
       </div>
     </div>
