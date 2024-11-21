@@ -1,8 +1,11 @@
 import { useState } from "react";
-import { FaUnlockAlt } from "react-icons/fa";
 import { z } from "zod";
-import { extractErrors } from "../../config/utils/validation";
+import {
+  extractErrors,
+  getInputClassName,
+} from "../../config/utils/validation";
 import ErrorMessage from "./ErrorMessage";
+import TestAccountInfo from "./TestAccountInfo";
 
 interface LoginFormErrors {
   email: string;
@@ -15,7 +18,7 @@ const schema = z.object({
 });
 
 const LoginForm = () => {
-  const [errors, setErrors] = useState({
+  const [errors, setErrors] = useState<LoginFormErrors>({
     email: "",
     password: "",
   });
@@ -36,7 +39,7 @@ const LoginForm = () => {
       return;
     }
     setErrors({} as LoginFormErrors);
-    console.log("폼 제출 성공:", result.data);
+    // console.log("폼 제출 성공:", result.data);
   };
 
   return (
@@ -45,17 +48,8 @@ const LoginForm = () => {
         <h1 className="text-2xl font-bold">Welcome!</h1>
         <p className="text-gray-500">Please login to your account.</p>
       </div>
-      <div className="flex items-center my-1 p-3 px-5 bg-lime-50 border-[1px] border-lime-100 rounded-xl">
-        <FaUnlockAlt size={24} color="darkgreen" />
-        <div className="flex flex-col mx-4 text-green-800 text-sm">
-          <p>
-            <strong>email :</strong> john@gmail.com
-          </p>
-          <p>
-            <strong>password :</strong> &123456
-          </p>
-        </div>
-      </div>
+      <TestAccountInfo />
+
       <form
         onSubmit={handleSubmit}
         className="flex flex-col mt-7 mb-1 space-y-2"
@@ -63,23 +57,16 @@ const LoginForm = () => {
         <input
           type="email"
           name="email"
-          placeholder="Email"
-          className={`bg-[#f8f9fa] shadow-inner p-3 rounded-lg ${
-            errors.email ? "border-red-500 border-[1px]" : "mb-5"
-          }`}
+          className={getInputClassName(!!errors.email)}
         />
         <ErrorMessage message={errors.email} />
-
         <input
           type="password"
           name="password"
           placeholder="Password"
-          className={`bg-[#f8f9fa] shadow-inner p-3 rounded-lg ${
-            errors.password ? "border-red-500 border-[1px]" : "!mb-5"
-          }`}
+          className={getInputClassName(!!errors.password)}
         />
         <ErrorMessage message={errors.password} />
-
         <button
           type="submit"
           className="bg-yellow-400 p-3 mt-5 rounded-lg text-white font-bold"
