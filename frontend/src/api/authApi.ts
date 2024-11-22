@@ -2,7 +2,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const loginWithFormData = async (email: string, password: string) => {
   // const queryParams = new URLSearchParams({ email, password });
-  console.log(API_BASE_URL, queryParams);
+  // console.log(API_BASE_URL, queryParams);
 
   const response = await fetch(`${API_BASE_URL}/users/login`, {
     method: "POST",

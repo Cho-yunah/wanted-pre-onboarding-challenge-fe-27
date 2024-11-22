@@ -8,7 +8,7 @@ import ErrorMessage from "./ErrorMessage";
 import TestAccountInfo from "./TestAccountInfo";
 import { loginWithFormData } from "../../api/authApi";
 
-interface LoginFormErrors {
+interface LoginForm {
   email: string;
   password: string;
 }
@@ -19,18 +19,26 @@ const schema = z.object({
 });
 
 const LoginForm = () => {
-  const [errors, setErrors] = useState<LoginFormErrors>({
+  const [formData, setFormData] = useState<LoginForm>({
     email: "",
     password: "",
   });
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
+  const [errors, setErrors] = useState<LoginForm>({
+    email: "",
+    password: "",
+  });
 
-    const result = schema.safeParse({ email, password });
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value || "",
+    });
+  };
+
+  const handleValidation = () => {
+    const result = schema.safeParse({ ...formData });
     if (!result.success) {
       const fieldErrors = extractErrors(result.error);
       setErrors({
@@ -39,9 +47,18 @@ const LoginForm = () => {
       });
       return;
     }
-    setErrors({} as LoginFormErrors);
+    setErrors({} as LoginForm);
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    handleValidation();
+    if (Object.values(errors).some((error) => error)) {
+      return;
+    }
+
     try {
-      loginWithFormData(email, password);
+      loginWithFormData(formData.email, formData.password);
     } catch (error) {
       console.log(error);
     }
@@ -62,15 +79,19 @@ const LoginForm = () => {
         <input
           type="email"
           name="email"
+          value={formData?.email}
           placeholder="Email"
           className={getInputClassName(!!errors.email)}
+          onChange={handleChange}
         />
         <ErrorMessage message={errors.email} />
         <input
           type="password"
           name="password"
+          value={formData?.password}
           placeholder="Password"
           className={getInputClassName(!!errors.password)}
+          onChange={handleChange}
         />
         <ErrorMessage message={errors.password} />
         <button
