@@ -7,11 +7,10 @@ export const loginWithFormData = async (email: string, password: string) => {
   const response = await fetch(`${API_BASE_URL}/users/login`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json", // JSON 요청임을 명시
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email, password }), // JSON 형식으로 본문 전달
+    body: JSON.stringify({ email, password }),
   });
-  console.log(response);
 };
 
 export const signupWithFormData = async (
@@ -22,9 +21,10 @@ export const signupWithFormData = async (
   const response = await fetch(`${API_BASE_URL}/users/create`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json", // JSON 요청임을 명시
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({ name, email, password }), // JSON 형식으로 본문 전달
+    body: JSON.stringify({ name, email, password }),
   });
-  console.log(response);
+  const data = await response.json();
+  localStorage.setItem("loginToken", data.token);
 };

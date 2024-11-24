@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Tab from "@components/Tab";
-import { TAB_ITEM } from "../../config/constants";
+import { TAB_ITEM } from "../config/constants";
 import SignupForm from "@components/auth/SignupForm";
 import LoginForm from "@components/auth/LoginForm";
 

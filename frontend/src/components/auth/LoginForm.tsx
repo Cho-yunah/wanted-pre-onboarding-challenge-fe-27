@@ -1,64 +1,38 @@
 import { useState } from "react";
+import useValidation from "../../hooks/useValidation";
 import { z } from "zod";
-import {
-  extractErrors,
-  getInputClassName,
-} from "../../config/utils/validation";
+import { getInputClassName } from "../../config/utils/validation";
 import ErrorMessage from "./ErrorMessage";
 import TestAccountInfo from "./TestAccountInfo";
 import { loginWithFormData } from "../../api/authApi";
-
-interface LoginForm {
-  email: string;
-  password: string;
-}
+import { useNavigate } from "react-router-dom";
 
 const schema = z.object({
-  email: z.string().email("유효한 이메일 주소를 입력해주세요."),
-  password: z.string().min(8, "비밀번호는 8자 이상이어야 합니다."),
+  email: z.string().email("유효한 이메일 주소를 입력하세요."),
+  password: z.string().min(8, "비밀번호는 최소 8자 이상이어야 합니다."),
 });
 
 const LoginForm = () => {
-  const [formData, setFormData] = useState<LoginForm>({
-    email: "",
-    password: "",
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({ email: "", password: "" });
+
+  const { errors, validate } = useValidation({
+    schema,
+    formData,
   });
 
-  const [errors, setErrors] = useState<LoginForm>({
-    email: "",
-    password: "",
-  });
-
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value || "",
-    });
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleValidation = () => {
-    const result = schema.safeParse({ ...formData });
-    if (!result.success) {
-      const fieldErrors = extractErrors(result.error);
-      setErrors({
-        email: fieldErrors.email || "",
-        password: fieldErrors.password || "",
-      });
-      return;
-    }
-    setErrors({} as LoginForm);
-  };
-
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    handleValidation();
-    if (Object.values(errors).some((error) => error)) {
-      return;
-    }
+    if (!validate()) return;
 
     try {
       loginWithFormData(formData.email, formData.password);
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
@@ -80,9 +54,9 @@ const LoginForm = () => {
           type="email"
           name="email"
           value={formData?.email}
+          onChange={handleChange}
           placeholder="Email"
           className={getInputClassName(!!errors.email)}
-          onChange={handleChange}
         />
         <ErrorMessage message={errors.email} />
         <input

@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Homepage from "../pages/Homepage";
 import AuthLayout from "../layouts/AuthLayout";
-import Authpage from "../pages/auth/AuthPage";
+import Authpage from "../pages/AuthPage";
 
 const routes = createBrowserRouter([
   {
