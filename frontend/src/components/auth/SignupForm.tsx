@@ -1,17 +1,10 @@
-import {
-  extractErrors,
-  getInputClassName,
-} from "../../config/utils/validation";
+import { getInputClassName } from "../../config/utils/validation";
 import { useState } from "react";
 import { z } from "zod";
 import ErrorMessage from "./ErrorMessage";
 import { signupWithFormData } from "../../api/authApi";
-
-interface SignupFormErrors {
-  name: string;
-  email: string;
-  password: string;
-}
+import useValidation from "../../hooks/useValidation";
+import { useNavigate } from "react-router-dom";
 
 const schema = z.object({
   name: z.string().min(2, "2글자 이상의 이름을 입력해주세요."),
@@ -20,38 +13,29 @@ const schema = z.object({
 });
 
 const SignupForm = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
   });
 
-  const [errors, setErrors] = useState({
-    name: "",
-    email: "",
-    password: "",
+  const { errors, validate } = useValidation({
+    schema,
+    formData,
   });
 
   const handleChange = (e: any) => {
-    console.log(e.target.name, e.target.value);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    const result = schema.safeParse(formData);
-    if (!result.success) {
-      const fieldErrors = extractErrors(result.error);
-      setErrors({
-        name: fieldErrors.name || "",
-        email: fieldErrors.email || "",
-        password: fieldErrors.password || "",
-      });
-      return;
-    }
-    setErrors({} as SignupFormErrors);
+    if (!validate()) return;
+
     try {
       signupWithFormData(formData.name, formData.email, formData.password);
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
