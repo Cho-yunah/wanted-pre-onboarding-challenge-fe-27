@@ -11,6 +11,10 @@ export const loginWithFormData = async (email: string, password: string) => {
     },
     body: JSON.stringify({ email, password }),
   });
+
+  const data = await response.json();
+  localStorage.setItem("loginToken", data.token);
+  return data;
 };
 
 export const signupWithFormData = async (
@@ -25,6 +29,12 @@ export const signupWithFormData = async (
     },
     body: JSON.stringify({ name, email, password }),
   });
+  if (!response.ok) {
+    throw new Error("회원가입에 실패했습니다.");
+  } else {
+    const data = await response.json();
+    localStorage.setItem("loginToken", data.token);
+  }
   const data = await response.json();
   localStorage.setItem("loginToken", data.token);
 };
